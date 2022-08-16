@@ -10,10 +10,9 @@ namespace HouseMarket.OfferService.Services
         private readonly string _url = "https://partnerapi.funda.nl/feeds/Aanbod.svc/json/ac1b0b1572524640a0ecc54de453ea9f/?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25";
         private HouseMarketOffer? _houseMarketOffer;
 
-        public HouseWithGardenMarketOfferService(HttpClient client, HouseMarketOffer houseMarketOffer)
+        public HouseWithGardenMarketOfferService(HttpClient client)
         {
             _client = client;
-            _houseMarketOffer = houseMarketOffer;
         }
 
         public async Task<HouseMarketOffer?> GetOfferAsync()

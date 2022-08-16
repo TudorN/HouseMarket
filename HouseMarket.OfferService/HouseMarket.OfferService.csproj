@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="DataModel\TestData\Houses with garden.json" />
+    <None Remove="DataModel\TestData\Houses.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DataModel\TestData\Houses with garden.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataModel\TestData\Houses.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
