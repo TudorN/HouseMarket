@@ -16,7 +16,7 @@ namespace HouseMarket.Controllers
             var enableTestData = true;
             var testData = System.IO.File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\DataModel\\TestData\\Houses.json");
 
-            model.HouseMarketOffer = enableTestData ? JsonSerializer.Deserialize<HouseMarketOffer>(testData) : offerService.GetOfferAsync().Result; ;
+            model.HouseMarketOffer = enableTestData ? JsonSerializer.Deserialize<HouseMarketOffer>(testData) : offerService.GetOfferAsync().Result;
             model.TopBrokers = model.HouseMarketOffer?.Objects.GroupBy(x => x.MakelaarId).OrderByDescending(x => x.Count()).Take(10);
 
 
