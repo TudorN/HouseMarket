@@ -1,5 +1,7 @@
-﻿using HouseMarket.Models.HouseMarketOffer;
+﻿using System.Text.Json;
+using HouseMarket.Models.HouseMarketOffer;
 using HouseMarket.OfferService.DataModel;
+using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 using Microsoft.AspNetCore.Mvc;
 using HouseMarket.OfferService.Services.Interfaces;
 
@@ -11,7 +13,7 @@ namespace HouseMarket.Controllers
         private readonly IHouseMarketOfferService _houseMarketOfferService;
         public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService)
         {
-            this._topBrokerService = topBrokerService;
+            _topBrokerService = topBrokerService;
             _houseMarketOfferService = houseMarketOfferService;
         }
         public IActionResult Index()
@@ -21,13 +23,15 @@ namespace HouseMarket.Controllers
             List<Broker> top10Brokers;
 
             try
-            { 
-                top10Brokers = _topBrokerService.GetTopBrokers(httpClient, false, 10);
+            {
+                var houseMarketOffer = _houseMarketOfferService.GetHouseOffer(httpClient, false);
+                top10Brokers = _topBrokerService.GetTopBrokers(houseMarketOffer, 10);
             }
             catch (Exception)
             {
-                _houseMarketOfferService.testFlag = true;
-                top10Brokers = _topBrokerService.GetTopBrokers(httpClient, false, 10);
+                var sampleDataString = System.IO.File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
+                var sampleDataHouseMarket = JsonSerializer.Deserialize<HouseMarketOffer>(sampleDataString);
+                top10Brokers = _topBrokerService.GetTopBrokers(sampleDataHouseMarket, 10);
             }
           
             model.Top10Brokers = top10Brokers;

@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
+﻿using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 using HouseMarket.OfferService.Services.Interfaces;
 
 namespace HouseMarket.OfferService.Services
@@ -14,13 +13,7 @@ namespace HouseMarket.OfferService.Services
         private const string UrlParam2 = "/?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25";
 
 
-        public bool testFlag { get; set; }//in case the api doesn't work set this to true
-        private static string DataSample1 => File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
-        private static string DataSample2 => File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\HousesWithGarden.json");
-        public bool testWithGarden { get; set; }
-        private string DataSample => testWithGarden ? DataSample2 : DataSample1;
-        private HouseMarketOffer? DataSampleHouseMarketOffer => JsonSerializer.Deserialize<HouseMarketOffer>(DataSample);
-        
+      
         public HouseMarketOfferService(IGenericApiCall<HouseMarketOffer> houseMarketApiService)
         {
             _houseMarketApiService = houseMarketApiService;
@@ -34,7 +27,7 @@ namespace HouseMarket.OfferService.Services
         public HouseMarketOffer? GetHouseOffer(HttpClient client, bool hasGarden)
         {
             BuildUrl(hasGarden);
-            return testFlag ? DataSampleHouseMarketOffer : _houseMarketApiService.GetResultAsync(client, _url).Result;
+            return _houseMarketApiService.GetResultAsync(client, _url).Result;
         }
     }
 }

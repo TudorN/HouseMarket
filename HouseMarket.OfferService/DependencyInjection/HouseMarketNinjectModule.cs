@@ -40,9 +40,9 @@ namespace HouseMarket.OfferService.DependencyInjection
 
         public override void Load()
         {
-            Bind<IHouseMarketOfferService>().To<HouseMarketOfferService>();
-            Bind<ITopBrokerService>().To<TopBrokerService>();
-            Bind<IGenericApiCall<HouseMarketOffer>>().To<GenericApiCall<HouseMarketOffer>>();
+            //Bind<IHouseMarketOfferService>().To<HouseMarketOfferService>();
+            //Bind<ITopBrokerService>().To<TopBrokerService>();
+            //Bind<IGenericApiCall<HouseMarketOffer>>().To<GenericApiCall<HouseMarketOffer>>();
         }
     }
 }

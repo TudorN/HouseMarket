@@ -8,25 +8,14 @@ namespace HouseMarket.OfferService.Services
 {
     public class TopBrokerService:BrokerBaseClass, ITopBrokerService
     {
-        private readonly IHouseMarketOfferService _houseMarketOfferService;
-        public TopBrokerService(IHouseMarketOfferService houseMarketOfferService)
-        {
-            _houseMarketOfferService = houseMarketOfferService;
-        }
-
-        private HouseMarketOffer? GetHouseMarketOffer(HttpClient httpClient, bool withGarden)
-        {
-            return _houseMarketOfferService.GetHouseOffer(httpClient, withGarden);
-        }
-
         private static IEnumerable<IGrouping<int, Object>>? GetTopGroupedBrokers(IEnumerable<Object>? objects, int numberOfBrokers)
         {
             return objects?.GroupBy(x => x.MakelaarId).OrderByDescending(x => x.Count()).Take(numberOfBrokers);
         }
 
-        public List<Broker> GetTopBrokers(HttpClient httpClient, bool withGarden, int numberOfBrokers)
+        public List<Broker> GetTopBrokers(HouseMarketOffer? houseMarketOffer, int numberOfBrokers)
         {
-            var objects = GetHouseMarketOffer(httpClient, withGarden)?.Objects;
+            var objects = houseMarketOffer?.Objects;
             var topGroupedBrokers = GetTopGroupedBrokers(objects, numberOfBrokers);
 
             return GetBrokerList(topGroupedBrokers);
