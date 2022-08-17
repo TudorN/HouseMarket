@@ -12,7 +12,7 @@ namespace HouseMarket.Controllers
         private readonly ITopBrokerService _topBrokerService;
         private readonly IHouseMarketOfferService _houseMarketOfferService;
         private readonly HttpClient _httpClient;
-        private const int NumberOfTopBrokers = 5;
+        private const int NumberOfTopBrokers = 10;
 
         public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService)
         {
@@ -31,8 +31,8 @@ namespace HouseMarket.Controllers
                 var houseMarketOffer = _houseMarketOfferService.GetHouseOffer(_httpClient, false);
                 var houseMarketOfferWithGarden = _houseMarketOfferService.GetHouseOffer(_httpClient, true);
                 
-                topBrokers = _topBrokerService.GetTopBrokers(houseMarketOffer, NumberOfTopBrokers);
-                topBrokersWithGarden = _topBrokerService.GetTopBrokers(houseMarketOfferWithGarden, NumberOfTopBrokers);
+                topBrokers = _topBrokerService.GetBrokers(houseMarketOffer, NumberOfTopBrokers);
+                topBrokersWithGarden = _topBrokerService.GetBrokers(houseMarketOfferWithGarden, NumberOfTopBrokers);
             }
             catch (Exception)// in case the api doesn't work
             {
@@ -43,8 +43,8 @@ namespace HouseMarket.Controllers
                 var sampleDataObject2 = JsonSerializer.Deserialize<HouseMarketOffer>(sampleDataString2);
 
 
-                topBrokers = _topBrokerService.GetTopBrokers(sampleDataObject1, NumberOfTopBrokers);
-                topBrokersWithGarden = _topBrokerService.GetTopBrokers(sampleDataObject2, NumberOfTopBrokers);
+                topBrokers = _topBrokerService.GetBrokers(sampleDataObject1, NumberOfTopBrokers);
+                topBrokersWithGarden = _topBrokerService.GetBrokers(sampleDataObject2, NumberOfTopBrokers);
             }
 
 

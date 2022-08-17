@@ -13,7 +13,7 @@ namespace HouseMarket.OfferService.Services
             return objects?.GroupBy(x => x.MakelaarId).OrderByDescending(x => x.Count()).Take(numberOfBrokers);
         }
 
-        public List<Broker> GetTopBrokers(HouseMarketOffer? houseMarketOffer, int numberOfBrokers)
+        public List<Broker> GetBrokers(HouseMarketOffer? houseMarketOffer, int numberOfBrokers)
         {
             var objects = houseMarketOffer?.Objects;
             var topGroupedBrokers = GetTopGroupedBrokers(objects, numberOfBrokers);

@@ -5,6 +5,6 @@ namespace HouseMarket.OfferService.Services.Interfaces
 {
     public interface ITopBrokerService
     {
-        List<Broker> GetTopBrokers(HouseMarketOffer? houseMarketOffer, int numberOfBrokers);
+        List<Broker> GetBrokers(HouseMarketOffer? houseMarketOffer, int numberOfBrokers);
     }
 }
