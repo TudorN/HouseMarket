@@ -1,9 +1,11 @@
-﻿namespace HouseMarket.Models.HouseMarketOffer
+﻿using HouseMarket.OfferService.DataModel;
+
+namespace HouseMarket.Models.HouseMarketOffer
 {
     public class BrokersModel
     {
-        public string Name { get; set; }
-        public OfferService.DataModel.HouseMarketOffer? HouseMarketOffer { get; set; }
-        public IEnumerable<IGrouping<int, OfferService.DataModel.Object>>? TopBrokers { get; set; }
+        public List<Broker> Top10Brokers { get; set; }
+        public List<Broker> Top10BrokersHousesWithGarden { get; set; }
+
     }
 }

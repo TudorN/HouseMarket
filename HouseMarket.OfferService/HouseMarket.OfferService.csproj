@@ -7,17 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DataModel\TestData\Houses with garden.json" />
-    <None Remove="DataModel\TestData\Houses.json" />
+    <None Remove="DataModel\InputData\Json\Houses.json" />
+    <None Remove="DataModel\InputData\Json\HousesWithGarden.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="DataModel\TestData\Houses with garden.json">
+    <Content Include="DataModel\InputData\Json\Houses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataModel\TestData\Houses.json">
+    <Content Include="DataModel\InputData\Json\HousesWithGarden.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ninject" Version="3.3.6" />
   </ItemGroup>
 
 </Project>

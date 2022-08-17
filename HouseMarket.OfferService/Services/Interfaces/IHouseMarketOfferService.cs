@@ -1,9 +1,11 @@
-﻿using HouseMarket.OfferService.DataModel;
+﻿using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 
 namespace HouseMarket.OfferService.Services.Interfaces
 {
-    public interface  IHouseMarketOfferService
+    public interface IHouseMarketOfferService
     {
-        Task<HouseMarketOffer?> GetOfferAsync();
+        public bool testWithGarden { get; set; }
+        public bool testFlag { get; set; }
+        HouseMarketOffer? GetHouseOffer(HttpClient client, bool hasGarden);
     }
 }

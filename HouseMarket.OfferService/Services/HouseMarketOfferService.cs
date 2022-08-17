@@ -1,28 +1,40 @@
-﻿using System.Net.Http.Json;
-using HouseMarket.OfferService.DataModel;
+﻿using System.Text.Json;
+using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 using HouseMarket.OfferService.Services.Interfaces;
 
 namespace HouseMarket.OfferService.Services
 {
-    public class HouseMarketOfferService : IHouseMarketOfferService
+    public class HouseMarketOfferService: IHouseMarketOfferService
     {
-        private readonly HttpClient _client;
-        private readonly string _url = "https://partnerapi.funda.nl/feeds/Aanbod.svc/json/ac1b0b1572524640a0ecc54de453ea9f/?type=koop&zo=/amsterdam/&page=1&pagesize=25";
-        private HouseMarketOffer? _houseMarketOffer;
+        private readonly IGenericApiCall<HouseMarketOffer> _houseMarketApiService;
+        private string _url = string.Empty; 
+        private const string UrlBase = "https://partnerapi.funda.nl/feeds/Aanbod.svc/json/";
+        private const string Key = "ac1b0b1572524640a0ecc54de453ea9f";
+        private const string UrlParam1 = "/?type=koop&zo=/amsterdam/&page=1&pagesize=25";
+        private const string UrlParam2 = "/?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25";
 
-        public HouseMarketOfferService(HttpClient client)
+
+        public bool testFlag { get; set; }//in case the api doesn't work set this to true
+        private static string DataSample1 => File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
+        private static string DataSample2 => File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\HousesWithGarden.json");
+        public bool testWithGarden { get; set; }
+        private string DataSample => testWithGarden ? DataSample2 : DataSample1;
+        private HouseMarketOffer? DataSampleHouseMarketOffer => JsonSerializer.Deserialize<HouseMarketOffer>(DataSample);
+        
+        public HouseMarketOfferService(IGenericApiCall<HouseMarketOffer> houseMarketApiService)
         {
-            _client = client;
+            _houseMarketApiService = houseMarketApiService;
+        }
+        
+        private void BuildUrl(bool extraParam)
+        {
+           _url = UrlBase + Key + (extraParam ? UrlParam2 : UrlParam1);
         }
 
-        public async Task<HouseMarketOffer?> GetOfferAsync()
+        public HouseMarketOffer? GetHouseOffer(HttpClient client, bool hasGarden)
         {
-            var response = await _client.GetAsync(_url);
-            if (response.IsSuccessStatusCode)
-            {
-                _houseMarketOffer = await response.Content.ReadFromJsonAsync<HouseMarketOffer>();
-            }
-            return _houseMarketOffer;
+            BuildUrl(hasGarden);
+            return testFlag ? DataSampleHouseMarketOffer : _houseMarketApiService.GetResultAsync(client, _url).Result;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace HouseMarket.OfferService.DataModel;
+﻿namespace HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 
 public class Paging
 {

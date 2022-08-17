@@ -18,12 +18,12 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var broker in @Model.TopBrokers!)
+    @foreach (var broker in @Model.Top10Brokers)
     {
         <tr>
-            <td>@broker.Select(x=>x.MakelaarId).First()</td>
-            <td>@broker.Select(x=>x.MakelaarNaam).First()</td>
-            <td>@broker.Count()</td>
+            <td>@broker.Id</td>
+            <td>@broker.Name</td>
+            <td>@broker.NumberOfHouses</td>
         </tr>
     }
     </tbody>

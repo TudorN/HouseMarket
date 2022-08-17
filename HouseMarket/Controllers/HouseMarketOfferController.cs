@@ -1,24 +1,37 @@
 ﻿using HouseMarket.Models.HouseMarketOffer;
 using HouseMarket.OfferService.DataModel;
-using HouseMarket.OfferService.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using HouseMarket.OfferService.Services.Interfaces;
 
 namespace HouseMarket.Controllers
 {
     public class HouseMarketOfferController : Controller
     {
+        private readonly ITopBrokerService _topBrokerService;
+        private readonly IHouseMarketOfferService _houseMarketOfferService;
+        public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService)
+        {
+            this._topBrokerService = topBrokerService;
+            _houseMarketOfferService = houseMarketOfferService;
+        }
         public IActionResult Index()
         {
             var httpClient = new HttpClient();
             var model = new BrokersModel();
-            var offerService = new HouseMarketOfferService(httpClient);
-            var enableTestData = true;
-            var testData = System.IO.File.ReadAllText("C:\\Users\\Gebruiker\\source\\repos\\HouseMarket\\HouseMarket.OfferService\\DataModel\\TestData\\Houses.json");
+            List<Broker> top10Brokers;
 
-            model.HouseMarketOffer = enableTestData ? JsonSerializer.Deserialize<HouseMarketOffer>(testData) : offerService.GetOfferAsync().Result;
-            model.TopBrokers = model.HouseMarketOffer?.Objects.GroupBy(x => x.MakelaarId).OrderByDescending(x => x.Count()).Take(10);
-
+            try
+            { 
+                top10Brokers = _topBrokerService.GetTopBrokers(httpClient, false, 10);
+            }
+            catch (Exception)
+            {
+                _houseMarketOfferService.testFlag = true;
+                top10Brokers = _topBrokerService.GetTopBrokers(httpClient, false, 10);
+            }
+          
+            model.Top10Brokers = top10Brokers;
+          
 
             return View(model);
         }
