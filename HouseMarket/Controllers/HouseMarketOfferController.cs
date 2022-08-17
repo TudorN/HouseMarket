@@ -12,6 +12,8 @@ namespace HouseMarket.Controllers
         private readonly ITopBrokerService _topBrokerService;
         private readonly IHouseMarketOfferService _houseMarketOfferService;
         private readonly HttpClient _httpClient;
+        private const int NumberOfTopBrokers = 5;
+
         public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService)
         {
             _topBrokerService = topBrokerService;
@@ -20,17 +22,17 @@ namespace HouseMarket.Controllers
         }
         public IActionResult Index()
         {
-            var model = new BrokersModel();
-            List<Broker> top10Brokers;
-            List<Broker> top10BrokersWithGarden;
+            var model = new BrokersViewModel();
+            List<Broker> topBrokers;
+            List<Broker> topBrokersWithGarden;
 
             try
             {
                 var houseMarketOffer = _houseMarketOfferService.GetHouseOffer(_httpClient, false);
                 var houseMarketOfferWithGarden = _houseMarketOfferService.GetHouseOffer(_httpClient, true);
                 
-                top10Brokers = _topBrokerService.GetTopBrokers(houseMarketOffer, 10);
-                top10BrokersWithGarden = _topBrokerService.GetTopBrokers(houseMarketOfferWithGarden, 10);
+                topBrokers = _topBrokerService.GetTopBrokers(houseMarketOffer, NumberOfTopBrokers);
+                topBrokersWithGarden = _topBrokerService.GetTopBrokers(houseMarketOfferWithGarden, NumberOfTopBrokers);
             }
             catch (Exception)// in case the api doesn't work
             {
@@ -41,12 +43,14 @@ namespace HouseMarket.Controllers
                 var sampleDataObject2 = JsonSerializer.Deserialize<HouseMarketOffer>(sampleDataString2);
 
 
-                top10Brokers = _topBrokerService.GetTopBrokers(sampleDataObject1, 10);
-                top10BrokersWithGarden = _topBrokerService.GetTopBrokers(sampleDataObject2, 10);
+                topBrokers = _topBrokerService.GetTopBrokers(sampleDataObject1, NumberOfTopBrokers);
+                topBrokersWithGarden = _topBrokerService.GetTopBrokers(sampleDataObject2, NumberOfTopBrokers);
             }
-          
-            model.Top10Brokers = top10Brokers;
-            model.Top10BrokersHousesWithGarden = top10BrokersWithGarden;
+
+
+            model.NumberOfTopBrokers = NumberOfTopBrokers;
+            model.BuildModel(topBrokers, model.TopBrokerListViewModel1);
+            model.BuildModel(topBrokersWithGarden, model.TopBrokerListViewModel2);
           
 
             return View(model);
