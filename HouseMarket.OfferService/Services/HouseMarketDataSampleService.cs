@@ -6,8 +6,8 @@ namespace HouseMarket.OfferService.Services
 {
     public class HouseMarketDataSampleService: IHouseMarketDataSampleService
     {
-        private static readonly string DataSample1 = System.IO.File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
-        private static readonly string DataSample2 = System.IO.File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\HousesWithGarden.json");
+        private static readonly string DataSample1 = File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
+        private static readonly string DataSample2 = File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\HousesWithGarden.json");
 
         public HouseMarketOffer? GetDataSample(bool withGarden)
         {
