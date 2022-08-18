@@ -14,6 +14,7 @@ namespace HouseMarket.Models.HouseMarketOffer
         public TopBrokerListViewModel TopBrokerListViewModel2 { get; set; }
 
         public int NumberOfTopBrokers { get; set; }
+        public bool ApiCallSuccessful { get; set; }
 
         public void BuildModel(List<Broker> brokerList, TopBrokerListViewModel brokerViewModel)
         {

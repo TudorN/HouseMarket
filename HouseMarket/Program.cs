@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IHouseMarketOfferService, HouseMarketOfferService>();
 builder.Services.AddScoped<ITopBrokerService, TopBrokerService>();
 builder.Services.AddScoped<IGenericApiCall<HouseMarketOffer>, GenericApiCall<HouseMarketOffer>>();
+builder.Services.AddScoped<IHouseMarketDataSampleService, HouseMarketDataSampleService>();
 builder.Services.AddControllersWithViews();
 
 

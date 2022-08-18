@@ -6,6 +6,7 @@ namespace HouseMarket.OfferService.Services
     public class HouseMarketOfferService: IHouseMarketOfferService
     {
         private readonly IGenericApiCall<HouseMarketOffer> _houseMarketApiService;
+        private HouseMarketOffer? _houseMarketOffer;
         private string _url = string.Empty; 
         private const string UrlBase = "https://partnerapi.funda.nl/feeds/Aanbod.svc/json/";
         private const string Key = "ac1b0b1572524640a0ecc54de453ea9f";
@@ -13,7 +14,6 @@ namespace HouseMarket.OfferService.Services
         private const string UrlParam2 = "/?type=koop&zo=/amsterdam/tuin/&page=1&pagesize=25";
 
 
-      
         public HouseMarketOfferService(IGenericApiCall<HouseMarketOffer> houseMarketApiService)
         {
             _houseMarketApiService = houseMarketApiService;
@@ -26,8 +26,18 @@ namespace HouseMarket.OfferService.Services
 
         public HouseMarketOffer? GetHouseOffer(HttpClient client, bool hasGarden)
         {
-            BuildUrl(hasGarden);
-            return _houseMarketApiService.GetResultAsync(client, _url).Result;
+            try
+            {
+                BuildUrl(hasGarden);
+                _houseMarketOffer = _houseMarketApiService.GetResultAsync(client, _url).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Retrieving the data via the Api Call failed.{e.Message}");
+                throw;
+            }
+
+            return _houseMarketOffer;
         }
     }
 }

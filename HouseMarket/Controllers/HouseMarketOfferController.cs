@@ -1,7 +1,5 @@
-﻿using System.Text.Json;
-using HouseMarket.Models.HouseMarketOffer;
+﻿using HouseMarket.Models.HouseMarketOffer;
 using HouseMarket.OfferService.DataModel;
-using HouseMarket.OfferService.DataModel.InputData.GeneratedClasses;
 using Microsoft.AspNetCore.Mvc;
 using HouseMarket.OfferService.Services.Interfaces;
 
@@ -11,13 +9,15 @@ namespace HouseMarket.Controllers
     {
         private readonly ITopBrokerService _topBrokerService;
         private readonly IHouseMarketOfferService _houseMarketOfferService;
+        private readonly IHouseMarketDataSampleService _houseMarketDataSampleService;
         private readonly HttpClient _httpClient;
         private const int NumberOfTopBrokers = 10;
 
-        public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService)
+        public HouseMarketOfferController(ITopBrokerService topBrokerService, IHouseMarketOfferService houseMarketOfferService, IHouseMarketDataSampleService houseMarketDataSampleService)
         {
             _topBrokerService = topBrokerService;
             _houseMarketOfferService = houseMarketOfferService;
+            _houseMarketDataSampleService = houseMarketDataSampleService;
             _httpClient = new HttpClient();
         }
         public IActionResult Index()
@@ -33,18 +33,16 @@ namespace HouseMarket.Controllers
                 
                 topBrokers = _topBrokerService.GetBrokers(houseMarketOffer, NumberOfTopBrokers);
                 topBrokersWithGarden = _topBrokerService.GetBrokers(houseMarketOfferWithGarden, NumberOfTopBrokers);
+                model.ApiCallSuccessful = true;
             }
-            catch (Exception)// in case the api doesn't work
+            catch (Exception)
             {
-                var sampleDataString1 = System.IO.File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\Houses.json");
-                var sampleDataObject1 = JsonSerializer.Deserialize<HouseMarketOffer>(sampleDataString1);
-
-                var sampleDataString2 = System.IO.File.ReadAllText("..\\HouseMarket.OfferService\\bin\\Debug\\net6.0\\DataModel\\InputData\\Json\\HousesWithGarden.json");
-                var sampleDataObject2 = JsonSerializer.Deserialize<HouseMarketOffer>(sampleDataString2);
-
-
-                topBrokers = _topBrokerService.GetBrokers(sampleDataObject1, NumberOfTopBrokers);
-                topBrokersWithGarden = _topBrokerService.GetBrokers(sampleDataObject2, NumberOfTopBrokers);
+                // in case the api doesn't work we show some dataSamples
+                var dataSample1 = _houseMarketDataSampleService.GetDataSample(false);
+                var dataSample2 = _houseMarketDataSampleService.GetDataSample(false);
+                
+                topBrokers = _topBrokerService.GetBrokers(dataSample1, NumberOfTopBrokers);
+                topBrokersWithGarden = _topBrokerService.GetBrokers(dataSample2, NumberOfTopBrokers);
             }
 
 

@@ -3,6 +3,21 @@
     ViewData["Title"] = "House Market Offer Page";
 }
 
+<div style="text-align: right">
+    @if (Model.ApiCallSuccessful)
+    {
+        <div style="color:green">
+            <text> Api Call Successful </text>
+        </div>
+    }
+    else
+    {
+        <div style="color:red">
+            <text> Api Call failed. This is test data. </text>
+        </div>
+    }
+</div>
+
 <div class="text-center">
     <h1 class="display-5">House Market</h1>
     <h4 class="display-6">Top @Model.NumberOfTopBrokers brokers Amsterdam</h4>
